@@ -11,6 +11,7 @@ import styled from 'styled-components';
 
 function App() {
   const AppTabBar = ()=>{
+    
     const navigate = useNavigate()
     const tabs = [
         {
@@ -21,7 +22,7 @@ function App() {
         },
         {
           key:uuidV4(),
-          title:'公共',
+          title:'学校',
           icon:<UnorderedListOutline/>,
           path:'/common'
         },
@@ -32,15 +33,20 @@ function App() {
           path:'/mine'
         }
     ]
+    const [activeKey,setActiveKey] = useState(
+      tabs[0].key
+    )
     const onChangeRoute = (key:string)=>{
-     
+      setActiveKey(key)
      const res =  tabs.find(e=>(e.key == key))
       if(res){
         navigate(res.path)
       }
     }
     return (
-      <TabBar onChange={onChangeRoute} 
+      <TabBar 
+      onChange={onChangeRoute} 
+      activeKey={activeKey}
       style={{
         position:'fixed',
         bottom:'0px',
@@ -55,7 +61,8 @@ function App() {
     )
   }
   const LayoutContainer = styled.div`
-    height:100vh
+    height:100vh;
+    padding:10px;
   `
   return (
     <div className="App">

@@ -1,31 +1,29 @@
 import styled from "styled-components"
-import { List } from "antd-mobile"
-import { AddCircleOutline, CloseOutline } from 'antd-mobile-icons'
 import { useState } from "react"
-import {v4 as uuidV4} from 'uuid'
-import { cloneDeep } from 'lodash'
+import subject from "../../assets/subject"
 const HomeView = () =>{
-  const [todoList,setList] = useState([
-    {
-      text:'高考',
-      key:uuidV4()
-    },{
-      text:'测试',
-      key:uuidV4()
-    },{
-      text:'拿快递',
-      key:uuidV4()
+  const [majorList] = useState(subject.major)
+  const [hotList] = useState(subject.hot)
+  const randomColor = () =>{
+    const color = new Array(6).fill('1').map(e=>{
+      return parseInt(Math.random()*16 + '').toString(16)
+    })
+    return {
+      color:`#${color.join('')}`,
+      backgroundColor:`#${color.join('')}2f`
     }
-  ])
+  }
   const MainTitle = styled.div`
   display:flex;
   justify-content:space-around;
   align-items:center;
   font-size:20px;
-  margin-bottom:10px;
+  margin:10px 0;
   `
   const TodoUl = styled.ul`
   list-style:none;
+  height:240px;
+  overflow-y:auto;
   `
   const TodoItem = styled.li`
   display:flex;
@@ -33,38 +31,43 @@ const HomeView = () =>{
   align-items:center;
   border-bottom:1px solid #eee;
   padding:0 10px;
+  margin-bottom:2px;
   `
   const TodoText = styled.div`
+  width:calc(100% - 10px);
   font-size:20px;
   padding:5px 10px;
   `
-  const onCloseItem = (key:string) =>{
-    let idx = todoList.findIndex(e=>(e.key == key)) 
-    const list = cloneDeep(todoList)
-    list.splice(idx,1)
-    setList(list)
-  }
+
   return (
     <div>
       <MainTitle>
-        <div>
-        重要事件
-        </div>
-        <div>
-          <AddCircleOutline />
-        </div>
+        可报考专业
       </MainTitle>
-      <TodoUl >
+      <TodoUl>
         {
-          todoList.map((e,idx)=>{
+          majorList.map((e,idx)=>{
             return (
               <TodoItem>
-                <TodoText>
-                  {idx+1}.{e.text}
+                <TodoText style={{...randomColor()}}>
+                  {idx+1}.{e}
                 </TodoText>
-                <div onClick={()=>{onCloseItem(e.key)}}>
-                  <CloseOutline />
-                </div>
+              </TodoItem>
+            )
+          })
+        }
+      </TodoUl>
+      <MainTitle>
+        热门专业
+      </MainTitle>
+      <TodoUl>
+        {
+          hotList.map((e,idx)=>{
+            return (
+              <TodoItem>
+                <TodoText style={{...randomColor()}}>
+                  {idx+1}.{e}
+                </TodoText>
               </TodoItem>
             )
           })
