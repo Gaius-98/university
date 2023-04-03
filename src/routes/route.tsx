@@ -7,6 +7,7 @@ import HomeView from "../views/Home/home";
 import App from "../App";
 import ErrorElement from "../components/ErrorElement/ErrorElement";
 import CommonView from "../views/Common/common";
+import DetailView from "../views/Detail/detail";
 const routes = createBrowserRouter([
   {
     path:'/',
@@ -23,6 +24,9 @@ const routes = createBrowserRouter([
       },{
         path:'/common',
         element:<CommonView></CommonView>
+      },{
+        path:'/detail',
+        element:<DetailView></DetailView>
       }
     ]
   },

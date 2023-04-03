@@ -15,19 +15,19 @@ function App() {
     const navigate = useNavigate()
     const tabs = [
         {
-          key:uuidV4(),
+          key:'home',
           title:'首页',
           icon:<AppstoreOutline/>,
           path:'/home'
         },
         {
-          key:uuidV4(),
+          key:'common',
           title:'学校',
           icon:<UnorderedListOutline/>,
           path:'/common'
         },
         {
-          key:uuidV4(),
+          key:'mine',
           title:'我的',
           icon:<UserOutline/>,
           path:'/mine'
