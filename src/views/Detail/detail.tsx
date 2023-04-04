@@ -1,29 +1,42 @@
 import { useLocation,useNavigate } from "react-router"
-import {  NavBar } from 'antd-mobile'
-interface NavU {
-  university:string
-}
-const AppNavBar = (props:NavU) => {
-  const { university } = props
+import {  NavBar,List } from 'antd-mobile'
+import api from "../Common/api"
+import { useEffect, useState } from 'react'
+const DetailView = () => {
+  
+  const location =  useLocation()
+  const { state:{ params } } = location
+  const [subjectList,setSubject] = useState([{
+    subject:'',
+    lowestScoreLine:0
+  }])
+  useEffect(()=>{
+    api.getSubjectListByName(params)
+    .then(res=>{
+      const {code,data,msg} = res.data
+      if(code == 0){
+        setSubject(data)
+      }
+    })
+  },[])
   const navigate = useNavigate()
   const back = () => {
     navigate(-1)
   }
   return (
-    <NavBar onBack={back}>{university}</NavBar>
-  )
-}
-const DetailView = () => {
-  
-  const location =  useLocation()
-  const { state } = location
-  console.log(state)
-  return (
     <div>
-      <AppNavBar university={decodeURI(state.params)}>
-
-      </AppNavBar>
-      { decodeURI(state.params) }
+      <NavBar onBack={back}>{params.name}</NavBar>
+      <List>
+        {
+          subjectList.map(item=>{
+           return (
+            <List.Item>
+            {item.subject}({item.lowestScoreLine})
+            </List.Item>
+           )
+          })
+        }
+      </List>
     </div>
   )
 }
