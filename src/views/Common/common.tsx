@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useState,useEffect} from "react"
 import un from '../../assets/un'
 import api from './api'
+import { useNavigate } from 'react-router'
 const SearchComp = () => {
   return (
     <SearchBar placeholder='请输入内容' />
@@ -43,9 +44,10 @@ const Container = () =>{
   },[])
   
   
+  const navigate = useNavigate()
   const SideContainer = styled.div`
   display:flex;
-
+  padding:10px;
   `
   const Container = styled.div`
   flex:1;
@@ -65,6 +67,13 @@ const Container = () =>{
       }
     })
   },[unParams])
+  const onGoPath = (item:any) =>{
+    navigate(`/detail`,{
+      state:{
+        params:item
+      }
+    })
+  }
   return (
     <SideContainer>
     <SideBar activeKey={active.toString()} onChange={onChangeTab}>
@@ -76,7 +85,7 @@ const Container = () =>{
       <List>
         {
           activeList.map(item=>(
-            <List.Item>{item.name}</List.Item>
+            <List.Item onClick={()=>{onGoPath(item)}}>{item.name}</List.Item>
           ))
         }
       </List>
