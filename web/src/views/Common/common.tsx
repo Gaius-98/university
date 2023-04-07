@@ -1,11 +1,9 @@
 import { NavBar, SideBar,List,Popup,Form,Input} from 'antd-mobile'
 import styled from 'styled-components'
 import { useState,useEffect} from "react"
-import un from '../../assets/un'
 import api from './api'
 import { useNavigate } from 'react-router'
 import { FilterOutline } from 'antd-mobile-icons'
-import { KeepAlive } from 'react-activation'
 interface searchP{
   setParams:Function
 }
@@ -25,7 +23,7 @@ const SearchComp = (props:searchP) => {
     const setInputName = (val:string) =>{
       setName(val)
     }
-    const setInputScore = (val:number) =>{
+    const setInputScore = (val:string) =>{
       setLowestScoreLine(val)
     }
     return (
