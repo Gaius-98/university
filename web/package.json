@@ -16,6 +16,7 @@
     "lodash": "^4.17.21",
     "postcss-px-to-viewport-8-plugin": "^1.2.2",
     "react": "^18.2.0",
+    "react-activation": "^0.12.4",
     "react-dom": "^18.2.0",
     "react-router": "^6.5.0",
     "react-router-dom": "^6.10.0",

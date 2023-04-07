@@ -1,31 +1,83 @@
-import { SearchBar, SideBar,List  } from 'antd-mobile'
+import { NavBar, SideBar,List,Popup,Form,Input} from 'antd-mobile'
 import styled from 'styled-components'
 import { useState,useEffect} from "react"
 import un from '../../assets/un'
 import api from './api'
 import { useNavigate } from 'react-router'
-const SearchComp = () => {
+import { FilterOutline } from 'antd-mobile-icons'
+import { KeepAlive } from 'react-activation'
+interface searchP{
+  setParams:Function
+}
+const SearchComp = (props:searchP) => {
+  const {setParams} = props
+  const navigate = useNavigate()
+  const back = () => {
+    navigate(-1)
+  }
+  const RightOpt = () =>{
+    const [visible,setVisible] = useState(false)
+    const [name,setName] = useState('')
+    const [lowestScoreLine,setLowestScoreLine] = useState<string|number>('')
+    const onClickIcon = () =>{
+      setVisible(!visible)
+    }
+    const setInputName = (val:string) =>{
+      setName(val)
+    }
+    const setInputScore = (val:number) =>{
+      setLowestScoreLine(val)
+    }
+    return (
+      <div>
+        <FilterOutline onClick={ onClickIcon } />
+        <Popup
+          visible={visible}
+          onMaskClick={() => {
+            setVisible(false)
+            setParams({
+              name,
+              lowestScoreLine
+            })
+          }}
+          position='top'
+        >
+          <Form layout='horizontal' style={{padding:'10px'}}>
+          <Form.Item label='大学名称' name='name'>
+              <Input placeholder='请输入大学名称' clearable  onChange={(e)=>{setInputName(e)}}/>
+            </Form.Item>
+            <Form.Item label='分数' name='lowestScoreLine'>
+              <Input placeholder='请输入最低分数' clearable type='number' onChange={(e)=>{setInputScore(e)}}/>
+            </Form.Item>
+          </Form>
+        </Popup>
+      </div>
+    )
+  }
   return (
-    <SearchBar placeholder='请输入内容' />
+    <NavBar onBack={back} right={ RightOpt() } >大学</NavBar>
   )
 }
-const Container = () =>{
-  const [params,setParms] = useState({
-    name:'',
-    lowestScoreLine:''
-  })
-  const [unParams,setUnParams] = useState({
-    name:'',
-    lowestScoreLine:'',
-    provinceId:0
-  })
+interface containerProps{
+  params:{
+    name:string,
+    lowestScoreLine:string|number
+  },
+  setParams:Function
+}
+const Container = (props:containerProps) =>{
+  const {params,setParams} = props
   const [list,setList] = useState([
     {
       provinceId:0,
       province:''
     }
   ])
-  const [active,setActive] = useState(list[0].provinceId)
+  const [unParams,setUnParams] = useState({
+    ...params,
+    provinceId:0
+  })
+  const [active,setActive] = useState(list.length > 0 ? list[0]?.provinceId : '')
   const [activeList,setActiveList] = useState([{
     name:'1'
   }])
@@ -35,21 +87,19 @@ const Container = () =>{
       if(code == 0){
         setList(data)
         setUnParams({
-          ...unParams,
-          provinceId:data[0].provinceId
+          ...params,
+          provinceId: data.length > 0 ? data[0]?.provinceId : ''
         })
-        setActive(data[0].provinceId.toString())
+        setActive(data.length > 0 ? data[0]?.provinceId : '')
       }
     })
-  },[])
-  
-  
+  },[params])
   const navigate = useNavigate()
   const SideContainer = styled.div`
   display:flex;
   padding:10px;
   `
-  const Container = styled.div`
+  const ContainerFlex = styled.div`
   flex:1;
   `
   const onChangeTab = (key:string) => {
@@ -70,7 +120,10 @@ const Container = () =>{
   const onGoPath = (item:any) =>{
     navigate(`/detail`,{
       state:{
-        params:item
+        params:{
+          ...item,
+          lowestScoreLine:params.lowestScoreLine
+        }
       }
     })
   }
@@ -81,27 +134,33 @@ const Container = () =>{
         <SideBar.Item key={item.provinceId.toString()} title={item.province} />
       ))}
     </SideBar>
-    <Container>
+    <ContainerFlex>
       <List>
         {
-          activeList.map(item=>(
-            <List.Item onClick={()=>{onGoPath(item)}}>{item.name}</List.Item>
+          activeList.map((item,idx)=>(
+            <List.Item onClick={()=>{onGoPath(item)}} key={idx}>{item.name}</List.Item>
           ))
         }
       </List>
-    </Container>
+    </ContainerFlex>
     </SideContainer>
-    
-    
   )
 }
 const CommonView = ()=>{
-
+  const [params,setParms] = useState({
+    name:'',
+    lowestScoreLine:''
+  })
   return (
     <div>
-      <SearchComp></SearchComp>
+      <SearchComp 
+        setParams={setParms}
+      ></SearchComp>
       <div className="container">
-      <Container></Container>
+        <Container 
+          params={params} 
+          setParams={setParms}
+        ></Container>
       </div>
     </div>
   )

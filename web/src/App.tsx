@@ -1,14 +1,12 @@
 import { useState } from 'react'
 import { Routes, Route,useNavigate,RouterProvider,Outlet} from "react-router-dom";
 import {TabBar,NavBar} from 'antd-mobile'
-import {v4 as uuidV4} from 'uuid'
 import {
   AppstoreOutline,
   UnorderedListOutline,
   UserOutline,
 } from 'antd-mobile-icons'
 import styled from 'styled-components';
-
 function App() {
   const AppTabBar = ()=>{
     
@@ -61,17 +59,17 @@ function App() {
     )
   }
   const LayoutContainer = styled.div`
-    height:100vh;
+    height:calc(100vh - 20px);
     padding:10px;
+    overflow-y:auto;
   `
   return (
-    <div className="App">
-        <LayoutContainer >
+    <div className="App"> 
+      <LayoutContainer >
         <Outlet></Outlet>
-        </LayoutContainer>
-        <AppTabBar></AppTabBar>
+      </LayoutContainer>
+      <AppTabBar></AppTabBar>
     </div>
   )
 }
-
 export default App

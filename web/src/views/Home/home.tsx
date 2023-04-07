@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import { useState } from "react"
 import subject from "../../assets/subject"
+import { Badge } from "antd-mobile"
 const HomeView = () =>{
   const [majorList] = useState(subject.major)
   const [hotList] = useState(subject.hot)
@@ -29,14 +30,15 @@ const HomeView = () =>{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  border-bottom:1px solid #eee;
   padding:0 10px;
   margin-bottom:2px;
+  
   `
   const TodoText = styled.div`
   width:calc(100% - 10px);
   font-size:20px;
   padding:5px 10px;
+  border-radius:10px;
   `
 
   return (
@@ -48,7 +50,7 @@ const HomeView = () =>{
         {
           majorList.map((e,idx)=>{
             return (
-              <TodoItem>
+              <TodoItem key={idx}>
                 <TodoText style={{...randomColor()}}>
                   {idx+1}.{e}
                 </TodoText>
@@ -58,13 +60,16 @@ const HomeView = () =>{
         }
       </TodoUl>
       <MainTitle>
+      <Badge content='hot'>
         热门专业
+      </Badge>
+        
       </MainTitle>
       <TodoUl>
         {
           hotList.map((e,idx)=>{
             return (
-              <TodoItem>
+              <TodoItem key={idx}>
                 <TodoText style={{...randomColor()}}>
                   {idx+1}.{e}
                 </TodoText>
@@ -73,8 +78,6 @@ const HomeView = () =>{
           })
         }
       </TodoUl>
-      <div className="major">
-      </div>
     </div>
   )
 }

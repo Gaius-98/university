@@ -6,6 +6,7 @@ const DetailView = () => {
   
   const location =  useLocation()
   const { state:{ params } } = location
+  console.log(params)
   const [subjectList,setSubject] = useState([{
     subject:'',
     lowestScoreLine:0
@@ -28,9 +29,9 @@ const DetailView = () => {
       <NavBar onBack={back}>{params.name}</NavBar>
       <List>
         {
-          subjectList.map(item=>{
+          subjectList.map((item,idx)=>{
            return (
-            <List.Item>
+            <List.Item key={idx}>
             {item.subject}({item.lowestScoreLine})
             </List.Item>
            )
