@@ -16,7 +16,7 @@ router.get('/', async function(req, res, next) {
  */
 router.get('/getUniversityListByProvince', async function(req, res, next) {
   const { name,lowestScoreLine,provinceId} = req.query
-  const sql = `select id,name,province,provinceId from my_university where  name like'%${name}%' AND IFNULL(lowestScoreLine,0) < ${lowestScoreLine || 750} AND provinceId = ${provinceId} GROUP BY name `
+  const sql = `select id,name,province,provinceId,remark from my_university where  name like'%${name}%' AND IFNULL(lowestScoreLine,0) < ${lowestScoreLine || 750} AND provinceId = ${provinceId} GROUP BY name `
   const data = await co(sql)
   res.send(data);
 })

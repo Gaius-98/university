@@ -1,4 +1,4 @@
-import { NavBar, SideBar,List,Popup,Form,Input} from 'antd-mobile'
+import { NavBar, SideBar,List,Popup,Form,Input,Tag} from 'antd-mobile'
 import styled from 'styled-components'
 import { useState,useEffect} from "react"
 import api from './api'
@@ -77,7 +77,8 @@ const Container = (props:containerProps) =>{
   })
   const [active,setActive] = useState(list.length > 0 ? list[0]?.provinceId : '')
   const [activeList,setActiveList] = useState([{
-    name:'1'
+    name:'1',
+    remark:''
   }])
   useEffect(()=>{
     api.getProvinceList(params).then(res=>{
@@ -136,7 +137,16 @@ const Container = (props:containerProps) =>{
       <List>
         {
           activeList.map((item,idx)=>(
-            <List.Item onClick={()=>{onGoPath(item)}} key={idx}>{item.name}</List.Item>
+            <List.Item onClick={()=>{onGoPath(item)}} key={idx}>
+              <div style={{display:'flex',justifyContent:'flex-start',alignItems:'center'}}>
+                <span>
+                  {item.name}
+                </span>
+                <Tag round color='#2db7f5' style={{display:item.remark ? 'inline-block' :'none',marginLeft:'10px'}}>
+                  {item.remark}
+                </Tag>
+              </div>
+            </List.Item>
           ))
         }
       </List>
