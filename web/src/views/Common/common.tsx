@@ -4,11 +4,15 @@ import { useState,useEffect} from "react"
 import api from './api'
 import { useNavigate } from 'react-router'
 import { FilterOutline } from 'antd-mobile-icons'
-interface searchP{
+interface containerProps{
+  params:{
+    name:string,
+    lowestScoreLine:string
+  },
   setParams:Function
 }
-const SearchComp = (props:searchP) => {
-  const {setParams} = props
+const SearchComp = (props:containerProps) => {
+  const {params,setParams} = props
   const navigate = useNavigate()
   const back = () => {
     navigate(-1)
@@ -16,7 +20,7 @@ const SearchComp = (props:searchP) => {
   const RightOpt = () =>{
     const [visible,setVisible] = useState(false)
     const [name,setName] = useState('')
-    const [lowestScoreLine,setLowestScoreLine] = useState<string|number>('')
+    const [lowestScoreLine,setLowestScoreLine] = useState<string>('')
     const onClickIcon = () =>{
       setVisible(!visible)
     }
@@ -28,7 +32,7 @@ const SearchComp = (props:searchP) => {
     }
     return (
       <div>
-        <FilterOutline onClick={ onClickIcon } />
+        <FilterOutline onClick={ onClickIcon }  style={{fontSize:'24px'}} />
         <Popup
           visible={visible}
           onMaskClick={() => {
@@ -42,10 +46,10 @@ const SearchComp = (props:searchP) => {
         >
           <Form layout='horizontal' style={{padding:'10px'}}>
           <Form.Item label='大学名称' name='name'>
-              <Input placeholder='请输入大学名称' clearable  onChange={(e)=>{setInputName(e)}}/>
+              <Input  value={params.name} placeholder='请输入大学名称' clearable  onChange={(e)=>{setInputName(e)}}/>
             </Form.Item>
             <Form.Item label='分数' name='lowestScoreLine'>
-              <Input placeholder='请输入最低分数' clearable type='number' onChange={(e)=>{setInputScore(e)}}/>
+              <Input value={params.lowestScoreLine} placeholder='请输入最低分数' clearable type='number' onChange={(e)=>{setInputScore(e)}}/>
             </Form.Item>
           </Form>
         </Popup>
@@ -56,13 +60,7 @@ const SearchComp = (props:searchP) => {
     <NavBar onBack={back} right={ RightOpt() } >大学</NavBar>
   )
 }
-interface containerProps{
-  params:{
-    name:string,
-    lowestScoreLine:string|number
-  },
-  setParams:Function
-}
+
 const Container = (props:containerProps) =>{
   const {params,setParams} = props
   const [list,setList] = useState([
@@ -162,6 +160,7 @@ const CommonView = ()=>{
   return (
     <div>
       <SearchComp 
+        params={params}
         setParams={setParms}
       ></SearchComp>
       <div className="container">
