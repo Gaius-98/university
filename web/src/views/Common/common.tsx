@@ -1,9 +1,10 @@
-import { NavBar, SideBar,List,Popup,Form,Input,Tag} from 'antd-mobile'
+import { NavBar, SideBar,List,Popup,Form,Input,Tag,Collapse} from 'antd-mobile'
 import styled from 'styled-components'
 import { useState,useEffect} from "react"
 import api from './api'
 import { useNavigate } from 'react-router'
 import { FilterOutline } from 'antd-mobile-icons'
+import DetailView from '../Detail/detail'
 interface containerProps{
   params:{
     name:string,
@@ -115,14 +116,7 @@ const Container = (props:containerProps) =>{
     })
   },[unParams])
   const onGoPath = (item:any) =>{
-    navigate(`/detail`,{
-      state:{
-        params:{
-          ...item,
-          lowestScoreLine:params.lowestScoreLine
-        }
-      }
-    })
+
   }
   return (
     <SideContainer>
@@ -132,22 +126,22 @@ const Container = (props:containerProps) =>{
       ))}
     </SideBar>
     <ContainerFlex>
-      <List>
+      <Collapse accordion>
         {
           activeList.map((item,idx)=>(
-            <List.Item onClick={()=>{onGoPath(item)}} key={idx}>
-              <div style={{display:'flex',justifyContent:'flex-start',alignItems:'center'}}>
-                <span>
-                  {item.name}
-                </span>
-                <Tag round color='#2db7f5' style={{display:item.remark ? 'inline-block' :'none',marginLeft:'10px'}}>
-                  {item.remark}
-                </Tag>
-              </div>
-            </List.Item>
+            <Collapse.Panel onClick={()=>{onGoPath(item)}} key={idx.toString()} title={<div style={{display:'flex',justifyContent:'flex-start',alignItems:'center'}}>
+            <span>
+              {item.name}
+            </span>
+            <Tag round color='#2db7f5' style={{display:item.remark ? 'inline-block' :'none',marginLeft:'10px'}}>
+              {item.remark}
+            </Tag>
+          </div>}>
+            <DetailView params={{...item,lowestScoreLine:params.lowestScoreLine}}></DetailView>
+            </Collapse.Panel>
           ))
         }
-      </List>
+      </Collapse>
     </ContainerFlex>
     </SideContainer>
   )
