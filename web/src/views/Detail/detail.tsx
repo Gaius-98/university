@@ -2,15 +2,15 @@
 import { List,DotLoading} from 'antd-mobile'
 import api from "../Common/api"
 import { useEffect, useState } from 'react'
-interface params {
-  params:{
+
+interface viewProps{
+  subjectParams:{
     name:string,
-    remark?:string,
     lowestScoreLine:string
   }
 }
-const DetailView = (props:params) => {
-  const {params} = props
+const DetailView = (props:viewProps) => {
+  const { subjectParams } = props
   const [loading,setLoading] = useState(true)
   const [subjectList,setSubject] = useState([{
     subject:'',
@@ -18,7 +18,7 @@ const DetailView = (props:params) => {
   }])
   useEffect(()=>{
     setLoading(true)
-    api.getSubjectListByName(params)
+    api.getSubjectListByName(subjectParams)
     .then(res=>{
       const {code,data,msg} = res.data
       if(code == 0){
@@ -26,7 +26,7 @@ const DetailView = (props:params) => {
         setSubject(data)
       }
     })
-  },[params])
+  },[subjectParams])
   return (
     loading ?(
      <DotLoading/>) :

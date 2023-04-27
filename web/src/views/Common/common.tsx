@@ -1,4 +1,4 @@
-import { NavBar, SideBar,List,Popup,Form,Input,Tag,Collapse} from 'antd-mobile'
+import { NavBar, SideBar,Popup,Form,Input,Tag,Collapse} from 'antd-mobile'
 import styled from 'styled-components'
 import { useState,useEffect} from "react"
 import api from './api'
@@ -92,7 +92,6 @@ const Container = (props:containerProps) =>{
       }
     })
   },[params])
-  const navigate = useNavigate()
   const SideContainer = styled.div`
   display:flex;
   padding:10px;
@@ -115,9 +114,6 @@ const Container = (props:containerProps) =>{
       }
     })
   },[unParams])
-  const onGoPath = (item:any) =>{
-
-  }
   return (
     <SideContainer>
     <SideBar activeKey={active.toString()} onChange={onChangeTab}>
@@ -129,7 +125,7 @@ const Container = (props:containerProps) =>{
       <Collapse accordion>
         {
           activeList.map((item,idx)=>(
-            <Collapse.Panel onClick={()=>{onGoPath(item)}} key={idx.toString()} title={<div style={{display:'flex',justifyContent:'flex-start',alignItems:'center'}}>
+            <Collapse.Panel  key={idx.toString()} title={<div style={{display:'flex',justifyContent:'flex-start',alignItems:'center'}}>
             <span>
               {item.name}
             </span>
@@ -137,7 +133,7 @@ const Container = (props:containerProps) =>{
               {item.remark}
             </Tag>
           </div>}>
-            <DetailView params={{...item,lowestScoreLine:params.lowestScoreLine}}></DetailView>
+            <DetailView subjectParams={{name:item.name,lowestScoreLine:params.lowestScoreLine}}></DetailView>
             </Collapse.Panel>
           ))
         }
